@@ -9,8 +9,30 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@types/antd": "^1.0.0",
+    "@types/d3-format": "^3.0.1",
+    "@types/d3-queue": "^3.0.8",
+    "@types/d3-request": "^1.0.6",
+    "@types/d3-scale": "^4.0.3",
+    "@types/d3-shape": "^3.1.1",
+    "@types/lodash.sumby": "^4.6.7",
+    "@types/lodash.uniqby": "^4.7.7",
+    "@types/styled-components": "^5.1.26",
+    "@types/topojson": "^3.2.3",
+    "antd": "^5.2.3",
+    "d3-format": "^3.1.0",
+    "d3-queue": "^3.0.7",
+    "d3-request": "^1.0.6",
+    "d3-scale": "^4.0.2",
+    "d3-shape": "^3.2.0",
+    "lodash.sumby": "^4.6.0",
+    "lodash.uniqby": "^4.7.0",
+    "maplibre-gl": "^2.4.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "styled-components": "^5.3.8",
+    "topojson": "^3.0.2",
+    "undp-viz-colors": "^1.0.5"
   },
   "devDependencies": {
     "@types/react": "^18.0.27",
