@@ -119,7 +119,7 @@ export function MapContainer() {
     <div
       style={{
         height: window.location.href.includes('data.undp.org')
-          ? '80rem'
+          ? '90vh'
           : 'calc(100vh - 80px)',
         position: 'relative',
       }}
