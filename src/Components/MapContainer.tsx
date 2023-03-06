@@ -64,23 +64,37 @@ export function MapContainer() {
       )
       .defer(
         json,
-        'https://raw.githubusercontent.com/UNDP-Data/country-taxonomy-from-azure/main/country_territory_groups.json',
-      )
-      .defer(
-        json,
         'https://raw.githubusercontent.com/UNDP-Data/Electricity-Access-HREA-Map/master/src/Data/countryProjectSummary.json',
-      )
-      .defer(
-        json,
-        'https://raw.githubusercontent.com/UNDP-Data/Electricity-Access-HREA-Map/master/src/Data/projectData.json',
       )
       .await(
         (
           err: unknown,
           AccessDataForDistricts: AccessDataType[],
-          CountryTaxonomy: CountryTaxonomyDataType[],
           CountryProjectSummaryData: CountryProjectSummaryDataType[],
+        ) => {
+          // eslint-disable-next-line @typescript-eslint/no-throw-literal
+          if (err) throw err;
+          setAccessDataForDistrict(AccessDataForDistricts);
+          setCountryProjectSummaryData(CountryProjectSummaryData);
+        },
+      );
+  }, []);
+
+  useEffect(() => {
+    queue()
+      .defer(
+        json,
+        'https://raw.githubusercontent.com/UNDP-Data/Electricity-Access-HREA-Map/master/src/Data/projectData.json',
+      )
+      .defer(
+        json,
+        'https://raw.githubusercontent.com/UNDP-Data/country-taxonomy-from-azure/main/country_territory_groups.json',
+      )
+      .await(
+        (
+          err: unknown,
           ProjectData: ProjectDataType[],
+          CountryTaxonomy: CountryTaxonomyDataType[],
         ) => {
           // eslint-disable-next-line @typescript-eslint/no-throw-literal
           if (err) throw err;
@@ -96,8 +110,6 @@ export function MapContainer() {
             id: i,
           }));
           setProjectDataShape(projectDataGeoJson);
-          setAccessDataForDistrict(AccessDataForDistricts);
-          setCountryProjectSummaryData(CountryProjectSummaryData);
           setCountryTaxonomy(CountryTaxonomy);
         },
       );
