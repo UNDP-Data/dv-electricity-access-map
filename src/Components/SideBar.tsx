@@ -51,7 +51,7 @@ const SideBarEl = styled.div`
   margin: 1rem 0 0 1rem;
   background-color: rgba(255, 255, 255, 0.75);
   width: 25rem;
-  max-height: 80vh;
+  max-height: calc(100vh - 11rem);
   overflow: auto;
 `;
 
