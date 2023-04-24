@@ -151,7 +151,8 @@ export function MapContainer() {
               updateShowPoorRegions(e.target.checked);
             }}
           >
-            Show Poor Regions Only*
+            Show Poor Regions Only
+            <sup>[1]</sup>
           </Checkbox>
           <Checkbox
             className='undp-checkbox'

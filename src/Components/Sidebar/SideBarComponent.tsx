@@ -302,7 +302,7 @@ export function SideBarComponent(props: Props) {
                   'loading...'
                 )}
               </span>{' '}
-              belong to poor regions*
+              belong to poor regions<sup>[1]</sup>
             </p>
             {data ? (
               <p className='undp-typography small-font italics'>
@@ -312,7 +312,7 @@ export function SideBarComponent(props: Props) {
                   (data.totalPopulationWithRWIData * 100) /
                   data.population
                 ).toFixed(1)}
-                % population
+                % population in the {selectedCountry || 'World'}
               </p>
             ) : null}
           </div>
@@ -421,7 +421,7 @@ export function SideBarComponent(props: Props) {
                   (data.totalPopulationWithRWIData * 100) /
                   data.population
                 ).toFixed(1)}
-                % population
+                % population in the {selectedCountry || 'World'}
               </p>
             ) : null}
           </div>
