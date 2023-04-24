@@ -229,7 +229,7 @@ export function SideBarComponent(props: Props) {
               updateSelectedCountry(d);
             }}
           >
-            {countryList.map((d, i) => (
+            {countryList.sort().map((d, i) => (
               <Select.Option key={i} className='undp-select-option' value={d}>
                 {d}
               </Select.Option>
