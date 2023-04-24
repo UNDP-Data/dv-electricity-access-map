@@ -7,7 +7,7 @@ interface Props {
   xPosition: number;
   yPosition: number;
   country: string;
-  city?: string;
+  district?: string;
 }
 
 interface TooltipElProps {
@@ -36,7 +36,7 @@ const TooltipEl = styled.div<TooltipElProps>`
 `;
 
 export function Tooltip(props: Props) {
-  const { pctValue, popValue, city, country, xPosition, yPosition } = props;
+  const { pctValue, popValue, district, country, xPosition, yPosition } = props;
   return (
     <TooltipEl
       x={xPosition}
@@ -46,14 +46,19 @@ export function Tooltip(props: Props) {
     >
       <div
         className='flex-div flex-wrap'
-        style={{ padding: 'var(--spacing-05)', alignItems: 'baseline' }}
+        style={{
+          padding: district
+            ? 'var(--spacing-05)'
+            : 'var(--spacing-03) var(--spacing-03) 0 var(--spacing-03)',
+          alignItems: 'baseline',
+        }}
       >
         <h6
           className='undp-typography bold margin-bottom-00'
           style={{ color: 'var(--blue-600)' }}
         >
-          {city || country}{' '}
-          {city ? (
+          {district || country}{' '}
+          {district ? (
             <span
               className='undp-typography'
               style={{
@@ -68,46 +73,59 @@ export function Tooltip(props: Props) {
           ) : null}
         </h6>
       </div>
-      <hr className='undp-style margin-top-00 margin-bottom-00' />
-      <div
-        style={{
-          padding:
-            'var(--spacing-03) var(--spacing-05) var(--spacing-05) var(--spacing-05)',
-        }}
-      >
-        <div
-          className='flex-div margin-bottom-00 flex-space-between'
-          style={{ alignItems: 'flex-start' }}
-        >
-          <p className='small-font margin-bottom-00'>
-            Percent Access to Reliable Energy Services
-          </p>
-          <p
-            className='small-font bold margin-bottom-00'
-            style={{ flexShrink: '0' }}
+      {district ? (
+        <div>
+          <hr className='undp-style margin-top-00 margin-bottom-00' />
+          <div
+            style={{
+              padding:
+                'var(--spacing-03) var(--spacing-05) var(--spacing-05) var(--spacing-05)',
+            }}
           >
-            {pctValue !== undefined ? `${pctValue.toFixed(1)} %` : 'NA'}
-          </p>
+            <div
+              className='flex-div margin-bottom-00 flex-space-between'
+              style={{ alignItems: 'flex-start' }}
+            >
+              <p className='small-font margin-bottom-00'>
+                Percent Access to Reliable Energy Services
+              </p>
+              <p
+                className='small-font bold margin-bottom-00'
+                style={{ flexShrink: '0' }}
+              >
+                {pctValue !== undefined ? `${pctValue.toFixed(1)} %` : 'NA'}
+              </p>
+            </div>
+            {popValue ? (
+              <div
+                className='flex-div flex-space-between'
+                style={{ alignItems: 'flex-start' }}
+              >
+                <p className='small-font margin-bottom-00'>
+                  # People W/O Access to Reliable Energy Services
+                </p>
+                <p
+                  className='small-font bold margin-bottom-00'
+                  style={{ flexShrink: '0' }}
+                >
+                  {popValue
+                    ? format('.3s')(popValue).replace('G', 'B')
+                    : popValue === 0
+                    ? 0
+                    : 'NA'}
+                </p>
+              </div>
+            ) : null}
+          </div>{' '}
         </div>
-        <div
-          className='flex-div flex-space-between'
-          style={{ alignItems: 'flex-start' }}
+      ) : (
+        <p
+          className='undp-typography small-font margin-bottom-03 margin-top-02'
+          style={{ padding: '0 var(--spacing-03)' }}
         >
-          <p className='small-font margin-bottom-00'>
-            # People W/O Access to Reliable Energy Services
-          </p>
-          <p
-            className='small-font bold margin-bottom-00'
-            style={{ flexShrink: '0' }}
-          >
-            {popValue
-              ? format('.3s')(popValue).replace('G', 'B')
-              : popValue === 0
-              ? 0
-              : 'NA'}
-          </p>
-        </div>
-      </div>
+          Click to see details
+        </p>
+      )}
     </TooltipEl>
   );
 }

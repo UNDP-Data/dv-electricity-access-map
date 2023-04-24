@@ -3,10 +3,10 @@ import styled from 'styled-components';
 import { line, curveMonotoneX } from 'd3-shape';
 import { scaleLinear } from 'd3-scale';
 import UNDPColorModule from 'undp-viz-colors';
-import { CountryAccessDataType } from '../Types';
+import { CountrySummedDataType } from '../Types';
 
 interface Props {
-  data: CountryAccessDataType;
+  data: CountrySummedDataType;
 }
 
 const El = styled.div`
@@ -32,20 +32,14 @@ export function LineChartForCountry(props: Props) {
   const dataFormatted = [2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020].map(
     d => ({
       year: d,
-      pop: data.TotPopulation,
+      pop: data.population,
       pct_pop_elec_HREA:
-        data[
-          `PopAccess${
-            d as 2013 | 2014 | 2015 | 2016 | 2017 | 2018 | 2019 | 2020
-          }`
-        ] !== null
-          ? ((data[
-              `PopAccess${
-                d as 2013 | 2014 | 2015 | 2016 | 2017 | 2018 | 2019 | 2020
-              }`
-            ] as number) *
+        data.popAccess[data.popAccess.findIndex(el => el.year === d)].value !==
+        null
+          ? (data.popAccess[data.popAccess.findIndex(el => el.year === d)]
+              .value *
               100) /
-            data.TotPopulation
+            data.population
           : 0,
     }),
   );

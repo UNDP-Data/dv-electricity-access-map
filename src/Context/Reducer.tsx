@@ -15,6 +15,8 @@ export default (state: any, action: any) => {
       return { ...state, showPoorRegions: action.payload };
     case 'UPDATE_HIGHLIGHT_THRESHOLD':
       return { ...state, highlightThreshold: action.payload };
+    case 'UPDATE_ACCESS_DATA':
+      return { ...state, accessData: action.payload };
     default:
       return { ...state };
   }

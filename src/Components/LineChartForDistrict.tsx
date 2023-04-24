@@ -33,20 +33,14 @@ export function LineChartForDistrict(props: Props) {
     d => ({
       year: d,
       city: data.adm2_name,
-      pop: data.TotPopulation,
+      pop: data.population,
       pct_pop_elec_HREA:
-        data[
-          `PopAccess${
-            d as 2013 | 2014 | 2015 | 2016 | 2017 | 2018 | 2019 | 2020
-          }`
-        ] !== null
-          ? ((data[
-              `PopAccess${
-                d as 2013 | 2014 | 2015 | 2016 | 2017 | 2018 | 2019 | 2020
-              }`
-            ] as number) *
+        data.popAccess[data.popAccess.findIndex(el => el.year === d)].value !==
+        null
+          ? (data.popAccess[data.popAccess.findIndex(el => el.year === d)]
+              .value *
               100) /
-            data.TotPopulation
+            data.population
           : 0,
     }),
   );

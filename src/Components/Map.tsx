@@ -3,6 +3,7 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import UNDPColorModule from 'undp-viz-colors';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import maplibreGl from 'maplibre-gl';
+import * as pmtiles from 'pmtiles';
 import { Tooltip } from './Tooltip';
 import { CountryTaxonomyDataType, CtxDataType } from '../Types';
 import Context from '../Context/Context';
@@ -42,7 +43,10 @@ export function MapEl(props: Props) {
     highlightThreshold,
     showProjects,
     layer,
+    showPoorRegions,
+    updateAccessData,
   } = useContext(Context) as CtxDataType;
+  const protocol = new pmtiles.Protocol();
   const [hoverData, setHoverData] = useState<null | HoverDataProps>(null);
   const [projectHoverData, setProjectHoverData] =
     useState<null | ProjectDataProps>(null);
@@ -51,10 +55,10 @@ export function MapEl(props: Props) {
 
   const colorScale = UNDPColorModule.divergentColors.colorsx10;
   const zoom = 1.25;
-
   useEffect(() => {
     if (map.current) return;
     // initiate map and add base layer
+    maplibreGl.addProtocol('pmtiles', protocol.tile);
     (map as any).current = new maplibreGl.Map({
       container: mapContainer.current as any,
       style: {
@@ -76,13 +80,10 @@ export function MapEl(props: Props) {
             ],
             tileSize: 256,
           },
-          admin2: {
+          admin2data: {
             type: 'vector',
-            tiles: [
-              'https://undpngddlsgeohubdev01.blob.core.windows.net/admin/adm2_polygons/{z}/{x}/{y}.pbf',
-            ],
-            attribution: 'UNDP GeoHub',
             promoteId: 'adm2_id',
+            url: 'pmtiles://https://undpngddlsgeohubdev01.blob.core.windows.net/admin/rural_urban_District_Electricity_Access_20230421004438.pmtiles',
           },
           admin0: {
             type: 'vector',
@@ -115,41 +116,45 @@ export function MapEl(props: Props) {
           {
             id: 'admin2-electricity-access-population',
             type: 'fill',
-            source: 'admin2',
-            'source-layer': 'adm2_polygons',
+            source: 'admin2data',
+            'source-layer': 'tmpl3ue0da4',
             layout: {
               visibility: 'none',
             },
-            filter: ['has', 'hrea_2020'],
             paint: {
               'fill-color': [
-                'interpolate',
-                ['linear'],
-                ['get', 'pop_no_hrea_2020'],
-                0,
-                UNDPColorModule.sequentialColors.negativeColorsx06[0],
-                99.99,
-                UNDPColorModule.sequentialColors.negativeColorsx06[0],
-                100,
-                UNDPColorModule.sequentialColors.negativeColorsx06[1],
-                999.99,
-                UNDPColorModule.sequentialColors.negativeColorsx06[1],
-                1000,
-                UNDPColorModule.sequentialColors.negativeColorsx06[2],
-                99999.99,
-                UNDPColorModule.sequentialColors.negativeColorsx06[2],
-                100000,
-                UNDPColorModule.sequentialColors.negativeColorsx06[3],
-                499999.99,
-                UNDPColorModule.sequentialColors.negativeColorsx06[3],
-                500000,
-                UNDPColorModule.sequentialColors.negativeColorsx06[4],
-                999999.99,
-                UNDPColorModule.sequentialColors.negativeColorsx06[4],
-                1000000,
-                UNDPColorModule.sequentialColors.negativeColorsx06[5],
-                1000000000,
-                UNDPColorModule.sequentialColors.negativeColorsx06[5],
+                'let',
+                'popNoAccess',
+                ['-', ['get', 'TotPopulation'], ['get', 'PopAccess2020']],
+                [
+                  'interpolate',
+                  ['linear'],
+                  ['var', 'popNoAccess'],
+                  0,
+                  UNDPColorModule.sequentialColors.negativeColorsx06[0],
+                  99.99,
+                  UNDPColorModule.sequentialColors.negativeColorsx06[0],
+                  100,
+                  UNDPColorModule.sequentialColors.negativeColorsx06[1],
+                  999.99,
+                  UNDPColorModule.sequentialColors.negativeColorsx06[1],
+                  1000,
+                  UNDPColorModule.sequentialColors.negativeColorsx06[2],
+                  99999.99,
+                  UNDPColorModule.sequentialColors.negativeColorsx06[2],
+                  100000,
+                  UNDPColorModule.sequentialColors.negativeColorsx06[3],
+                  499999.99,
+                  UNDPColorModule.sequentialColors.negativeColorsx06[3],
+                  500000,
+                  UNDPColorModule.sequentialColors.negativeColorsx06[4],
+                  999999.99,
+                  UNDPColorModule.sequentialColors.negativeColorsx06[4],
+                  1000000,
+                  UNDPColorModule.sequentialColors.negativeColorsx06[5],
+                  1000000000,
+                  UNDPColorModule.sequentialColors.negativeColorsx06[5],
+                ],
               ],
               'fill-opacity': 1,
               'fill-outline-color': 'hsla(0, 0%, 100%, 0.1)',
@@ -158,56 +163,60 @@ export function MapEl(props: Props) {
             maxzoom: 22,
           },
           {
-            id: 'admin2-electricity-access',
+            id: 'admin2-electricity-access-percent',
             type: 'fill',
-            source: 'admin2',
-            'source-layer': 'adm2_polygons',
-            filter: ['has', 'hrea_2020'],
+            source: 'admin2data',
+            'source-layer': 'tmpl3ue0da4',
             paint: {
               'fill-color': [
-                'interpolate',
-                ['linear'],
-                ['get', `hrea_2020`],
-                0,
-                colorScale[9],
-                0.0999,
-                colorScale[9],
-                0.1,
-                colorScale[8],
-                0.1999,
-                colorScale[8],
-                0.2,
-                colorScale[7],
-                0.2999,
-                colorScale[7],
-                0.3,
-                colorScale[6],
-                0.3999,
-                colorScale[6],
-                0.4,
-                colorScale[5],
-                0.4999,
-                colorScale[5],
-                0.5,
-                colorScale[4],
-                0.5999,
-                colorScale[4],
-                0.6,
-                colorScale[3],
-                0.6999,
-                colorScale[3],
-                0.7,
-                colorScale[2],
-                0.7999,
-                colorScale[2],
-                0.8,
-                colorScale[1],
-                0.8999,
-                colorScale[1],
-                0.9,
-                colorScale[0],
-                1,
-                colorScale[0],
+                'let',
+                'percentAccess',
+                ['/', ['get', 'PopAccess2020'], ['get', 'TotPopulation']],
+                [
+                  'interpolate',
+                  ['linear'],
+                  ['var', 'percentAccess'],
+                  0,
+                  colorScale[9],
+                  0.0999,
+                  colorScale[9],
+                  0.1,
+                  colorScale[8],
+                  0.1999,
+                  colorScale[8],
+                  0.2,
+                  colorScale[7],
+                  0.2999,
+                  colorScale[7],
+                  0.3,
+                  colorScale[6],
+                  0.3999,
+                  colorScale[6],
+                  0.4,
+                  colorScale[5],
+                  0.4999,
+                  colorScale[5],
+                  0.5,
+                  colorScale[4],
+                  0.5999,
+                  colorScale[4],
+                  0.6,
+                  colorScale[3],
+                  0.6999,
+                  colorScale[3],
+                  0.7,
+                  colorScale[2],
+                  0.7999,
+                  colorScale[2],
+                  0.8,
+                  colorScale[1],
+                  0.8999,
+                  colorScale[1],
+                  0.9,
+                  colorScale[0],
+                  1,
+                  colorScale[0],
+                ],
               ],
               'fill-opacity': 1,
               'fill-outline-color': 'hsla(0, 0%, 100%, 0.1)',
@@ -218,9 +227,9 @@ export function MapEl(props: Props) {
           {
             id: 'admin2-electricity-access-overlay',
             type: 'fill',
-            source: 'admin2',
-            'source-layer': 'adm2_polygons',
-            filter: ['all', ['has', 'hrea_2020'], ['==', 'adm0_name', '']],
+            source: 'admin2data',
+            'source-layer': 'tmpl3ue0da4',
+            filter: ['==', 'adm0_id', ''],
             paint: {
               'fill-color': '#000',
               'fill-opacity': [
@@ -229,6 +238,20 @@ export function MapEl(props: Props) {
                 0.25,
                 0,
               ],
+            },
+            minzoom: 0,
+            maxzoom: 22,
+          },
+          {
+            id: 'admin2-overlay',
+            type: 'fill',
+            source: 'admin2data',
+            'source-layer': 'tmpl3ue0da4',
+            filter: ['==', 'adm0_id', ''],
+            paint: {
+              'fill-color': '#fff',
+              'fill-opacity': 0.9,
+              'fill-outline-color': 'hsla(0, 0%, 100%, 0)',
             },
             minzoom: 0,
             maxzoom: 22,
@@ -238,7 +261,7 @@ export function MapEl(props: Props) {
             type: 'fill',
             source: 'admin0',
             'source-layer': 'adm0_polygons',
-            filter: ['has', 'hrea_2020'],
+            filter: ['all', ['has', 'hrea_2020']],
             paint: {
               'fill-color': '#000',
               'fill-opacity': [
@@ -248,20 +271,6 @@ export function MapEl(props: Props) {
                 0,
               ],
               'fill-outline-color': 'hsla(0, 0%, 100%, 1)',
-            },
-            minzoom: 0,
-            maxzoom: 22,
-          },
-          {
-            id: 'admin2-overlay',
-            type: 'fill',
-            source: 'admin2',
-            'source-layer': 'adm2_polygons',
-            filter: ['all', ['has', 'hrea_2020'], ['==', 'adm0_name', '']],
-            paint: {
-              'fill-color': '#fff',
-              'fill-opacity': 0.5,
-              'fill-outline-color': 'hsla(0, 0%, 100%, 0)',
             },
             minzoom: 0,
             maxzoom: 22,
@@ -290,6 +299,66 @@ export function MapEl(props: Props) {
     (map as any).current.on('load', () => {
       let districtHoveredStateId: string | null = null;
       let countryHoveredStateId: string | null = null;
+      const dataFromMap = (map as any).current
+        .querySourceFeatures('admin2data', {
+          sourceLayer: 'tmpl3ue0da4',
+        })
+        .map((d: any) => ({
+          latCenter: d.properties.Lat_Center,
+          longCenter: d.properties.Long_Center,
+          country: d.properties.iso_3,
+          rwi: d.properties.RWI,
+          population: d.properties.TotPopulation,
+          adm2_id: d.properties.adm2_id,
+          adm2_name: d.properties.adm2_name,
+          popAccess: [
+            {
+              year: 2012,
+              value: d.properties.PopAccess2012,
+            },
+            {
+              year: 2013,
+              value: d.properties.PopAccess2013,
+            },
+            {
+              year: 2014,
+              value: d.properties.PopAccess2014,
+            },
+            {
+              year: 2015,
+              value: d.properties.PopAccess2015,
+            },
+            {
+              year: 2016,
+              value: d.properties.PopAccess2016,
+            },
+            {
+              year: 2017,
+              value: d.properties.PopAccess2017,
+            },
+            {
+              year: 2018,
+              value: d.properties.PopAccess2018,
+            },
+            {
+              year: 2019,
+              value: d.properties.PopAccess2019,
+            },
+            {
+              year: 2020,
+              value: d.properties.PopAccess2020,
+            },
+          ],
+        }));
+      updateAccessData(dataFromMap);
+      (map as any).current.on('click', 'admin0-layer', (e: any) => {
+        (map as any).current.getCanvas().style.cursor = 'pointer';
+        if (e.features.length > 0 && e.features[0].properties.adm0_id) {
+          // eslint-disable-next-line no-underscore-dangle
+          updateSelectedCountry(e.features[0].properties.adm0_name);
+          updateSelectedDistrict(undefined);
+        }
+      });
       // mouse over effect on district layer
       (map as any).current.on(
         'click',
@@ -297,18 +366,10 @@ export function MapEl(props: Props) {
         (e: any) => {
           (map as any).current.getCanvas().style.cursor = 'pointer';
           if (e.features.length > 0) {
-            updateSelectedDistrict(e.features[0].id);
+            updateSelectedDistrict(e.features[0].properties.adm2_id);
           }
         },
       );
-      (map as any).current.on('click', 'admin0-layer', (e: any) => {
-        (map as any).current.getCanvas().style.cursor = 'pointer';
-        if (e.features.length > 0) {
-          // eslint-disable-next-line no-underscore-dangle
-          updateSelectedCountry(e.features[0].properties.adm0_name);
-          updateSelectedDistrict(undefined);
-        }
-      });
       (map as any).current.on('mousemove', 'admin0-layer', (e: any) => {
         (map as any).current.getCanvas().style.cursor = 'pointer';
         if (e.features.length > 0) {
@@ -323,12 +384,9 @@ export function MapEl(props: Props) {
             );
           }
           countryHoveredStateId = e.features[0].id;
-          if (e.features[0].properties.pop_no_hrea_2020 !== undefined) {
+          if (e.features[0].properties.hrea_2020 !== undefined) {
             setHoverData({
-              district: undefined,
               country: e.features[0].properties.adm0_name,
-              pctValue: e.features[0].properties.hrea_2020 * 100,
-              popValue: e.features[0].properties.pop_no_hrea_2020,
               xPosition: e.originalEvent.clientX,
               yPosition: e.originalEvent.clientY,
             });
@@ -366,33 +424,33 @@ export function MapEl(props: Props) {
             if (districtHoveredStateId) {
               (map as any).current.setFeatureState(
                 {
-                  source: 'admin2',
+                  source: 'admin2data',
                   id: districtHoveredStateId,
-                  sourceLayer: 'adm2_polygons',
+                  sourceLayer: 'tmpl3ue0da4',
                 },
                 { hover: false },
               );
             }
             districtHoveredStateId = e.features[0].id;
-            if (e.features[0].properties.pop_no_hrea_2020 !== undefined) {
+            if (e.features[0].properties.PopAccess2020 !== undefined) {
               setHoverData({
-                district:
-                  e.features[0].properties.adm2_name !== ' ' &&
-                  e.features[0].properties.adm2_name !== '' &&
-                  e.features[0].properties.adm2_name
-                    ? e.features[0].properties.adm2_name
-                    : e.features[0].properties.adm1_name,
+                district: e.features[0].properties.adm2_name,
                 country: e.features[0].properties.adm0_name,
-                pctValue: e.features[0].properties.hrea_2020 * 100,
-                popValue: e.features[0].properties.pop_no_hrea_2020,
+                pctValue:
+                  (e.features[0].properties.PopAccess2020 /
+                    e.features[0].properties.TotPopulation) *
+                  100,
+                popValue:
+                  e.features[0].properties.TotPopulation -
+                  e.features[0].properties.PopAccess2020,
                 xPosition: e.originalEvent.clientX,
                 yPosition: e.originalEvent.clientY,
               });
               (map as any).current.setFeatureState(
                 {
-                  source: 'admin2',
+                  source: 'admin2data',
                   id: districtHoveredStateId,
-                  sourceLayer: 'adm2_polygons',
+                  sourceLayer: 'tmpl3ue0da4',
                 },
                 { hover: true },
               );
@@ -408,9 +466,9 @@ export function MapEl(props: Props) {
             setHoverData(null);
             (map as any).current.setFeatureState(
               {
-                source: 'admin2',
+                source: 'admin2data',
                 id: districtHoveredStateId,
-                sourceLayer: 'adm2_polygons',
+                sourceLayer: 'tmpl3ue0da4',
               },
               { hover: false },
             );
@@ -439,9 +497,9 @@ export function MapEl(props: Props) {
           if (districtHoveredStateId) {
             (map as any).current.setFeatureState(
               {
-                source: 'admin2',
+                source: 'admin2data',
                 id: districtHoveredStateId,
-                sourceLayer: 'adm2_polygons',
+                sourceLayer: 'tmpl3ue0da4',
               },
               { hover: false },
             );
@@ -482,12 +540,12 @@ export function MapEl(props: Props) {
   useEffect(() => {
     if (map.current) {
       if (
-        (map as any).current.getLayer('admin2-electricity-access') &&
+        (map as any).current.getLayer('admin2-electricity-access-percent') &&
         (map as any).current.getLayer('admin2-electricity-access-population')
       ) {
         if (layer === 1) {
           (map as any).current.setLayoutProperty(
-            'admin2-electricity-access',
+            'admin2-electricity-access-percent',
             'visibility',
             'visible',
           );
@@ -498,7 +556,7 @@ export function MapEl(props: Props) {
           );
         } else {
           (map as any).current.setLayoutProperty(
-            'admin2-electricity-access',
+            'admin2-electricity-access-percent',
             'visibility',
             'none',
           );
@@ -515,7 +573,7 @@ export function MapEl(props: Props) {
   useEffect(() => {
     if (map.current) {
       if (
-        (map as any).current.getLayer('admin2-electricity-access') &&
+        (map as any).current.getLayer('admin2-electricity-access-percent') &&
         (map as any).current.getLayer('admin2-overlay')
       ) {
         if (selectedCountry) {
@@ -523,13 +581,9 @@ export function MapEl(props: Props) {
             d => d['Country or Area'] === selectedCountry,
           );
           (map as any).current.setFilter('admin2-overlay', [
-            'all',
-            ['has', 'hrea_2020'],
-            [
-              '!=',
-              selectedDistrict ? 'adm2_id' : 'adm0_name',
-              selectedDistrict || countryTaxonomy[indx]['Country or Area'],
-            ],
+            '!=',
+            selectedDistrict ? 'adm2_id' : 'adm0_name',
+            selectedDistrict || countryTaxonomy[indx]['Country or Area'],
           ]);
           (map as any).current.flyTo({
             center: [
@@ -539,9 +593,9 @@ export function MapEl(props: Props) {
             zoom: 5,
           });
           (map as any).current.setFilter('admin2-electricity-access-overlay', [
-            'all',
-            ['has', 'hrea_2020'],
-            ['==', 'adm0_name', countryTaxonomy[indx]['Country or Area']],
+            '==',
+            'adm0_name',
+            countryTaxonomy[indx]['Country or Area'],
           ]);
           (map as any).current.setFilter('admin0-layer', [
             'all',
@@ -550,49 +604,85 @@ export function MapEl(props: Props) {
           ]);
         } else {
           (map as any).current.setFilter('admin2-overlay', [
-            'all',
-            ['has', 'hrea_2020'],
-            ['==', 'adm0_name', ''],
+            '==',
+            'adm0_name',
+            '',
           ]);
           (map as any).current.flyTo({
             center: [25, 5],
             zoom,
           });
           (map as any).current.setFilter('admin2-electricity-access-overlay', [
-            'all',
-            ['has', 'hrea_2020'],
-            ['==', 'adm0_name', ''],
+            '==',
+            'adm0_name',
+            '',
           ]);
           (map as any).current.setFilter('admin0-layer', [
             'all',
             ['has', 'hrea_2020'],
-            ['!=', 'adm0_name', ''],
           ]);
         }
       }
     }
   }, [selectedCountry, selectedDistrict]);
-
   useEffect(() => {
     if (map.current) {
       if (
-        (map as any).current.getLayer('admin2-electricity-access') &&
+        (map as any).current.getLayer('admin2-electricity-access-percent') &&
         (map as any).current.getLayer('admin2-electricity-access-population')
       ) {
-        (map as any).current.setFilter('admin2-electricity-access', [
-          'all',
-          ['has', 'hrea_2020'],
-          ['<', 'hrea_2020', highlightThreshold / 100 + 0.001],
-        ]);
-        (map as any).current.setFilter('admin2-electricity-access-population', [
-          'all',
-          ['has', 'hrea_2020'],
-          ['<', 'hrea_2020', highlightThreshold / 100 + 0.001],
-        ]);
+        if (showPoorRegions) {
+          (map as any).current.setFilter('admin2-electricity-access-percent', [
+            'all',
+            ['has', 'PopAccess2020'],
+            ['has', 'RWI'],
+            [
+              '<',
+              ['/', ['get', 'PopAccess2020'], ['get', 'TotPopulation']],
+              highlightThreshold / 100 + 0.001,
+            ],
+            ['<', ['get', 'RWI'], 0],
+          ]);
+          (map as any).current.setFilter(
+            'admin2-electricity-access-population',
+            [
+              'all',
+              ['has', 'PopAccess2020'],
+              ['has', 'RWI'],
+              [
+                '<',
+                ['/', ['get', 'PopAccess2020'], ['get', 'TotPopulation']],
+                highlightThreshold / 100 + 0.001,
+              ],
+              ['<', ['get', 'RWI'], 0],
+            ],
+          );
+        } else {
+          (map as any).current.setFilter('admin2-electricity-access-percent', [
+            'all',
+            ['has', 'PopAccess2020'],
+            [
+              '<',
+              ['/', ['get', 'PopAccess2020'], ['get', 'TotPopulation']],
+              highlightThreshold / 100 + 0.001,
+            ],
+          ]);
+          (map as any).current.setFilter(
+            'admin2-electricity-access-population',
+            [
+              'all',
+              ['has', 'PopAccess2020'],
+              [
+                '<',
+                ['/', ['get', 'PopAccess2020'], ['get', 'TotPopulation']],
+                highlightThreshold / 100 + 0.001,
+              ],
+            ],
+          );
+        }
       }
     }
-  }, [highlightThreshold]);
-
+  }, [highlightThreshold, showPoorRegions]);
   useEffect(() => {
     if (map.current) {
       if ((map as any).current.getLayer('projectData-circles')) {
@@ -604,7 +694,6 @@ export function MapEl(props: Props) {
       }
     }
   }, [showProjects]);
-
   return (
     <>
       <div
@@ -613,7 +702,7 @@ export function MapEl(props: Props) {
       />
       {hoverData ? (
         <Tooltip
-          city={hoverData.district}
+          district={hoverData.district}
           country={hoverData.country}
           popValue={hoverData.popValue}
           pctValue={hoverData.pctValue}

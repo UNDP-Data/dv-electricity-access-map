@@ -9,14 +9,13 @@ import UNDPColorModule from 'undp-viz-colors';
 import { MapEl } from './Map';
 import { POP_RANGE, PCT_RANGE } from '../Constants';
 import {
-  AccessDataType,
   CountryProjectSummaryDataType,
   CountryTaxonomyDataType,
   CtxDataType,
   ProjectDataType,
 } from '../Types';
 import Context from '../Context/Context';
-import { SideBar } from './SideBar';
+import { SideBar } from './Sidebar';
 
 const KeyEl = styled.div`
   padding: 1rem;
@@ -45,9 +44,6 @@ const LayerSelectorEl = styled.div`
 export function MapContainer() {
   const { layer, updateLayer, updateShowProjects, updateHideLabels } =
     useContext(Context) as CtxDataType;
-  const [accessDataForDistrict, setAccessDataForDistrict] = useState<
-    undefined | AccessDataType[]
-  >(undefined);
   const [countryProjectSummaryData, setCountryProjectSummaryData] = useState<
     undefined | CountryProjectSummaryDataType[]
   >(undefined);
@@ -60,21 +56,15 @@ export function MapContainer() {
     queue()
       .defer(
         json,
-        'https://raw.githubusercontent.com/UNDP-Data/Electricity-Access-HREA-Map/master/src/Data/accessDataDistrict.json',
-      )
-      .defer(
-        json,
         'https://raw.githubusercontent.com/UNDP-Data/Electricity-Access-HREA-Map/master/src/Data/countryProjectSummary.json',
       )
       .await(
         (
           err: unknown,
-          AccessDataForDistricts: AccessDataType[],
           CountryProjectSummaryData: CountryProjectSummaryDataType[],
         ) => {
           // eslint-disable-next-line @typescript-eslint/no-throw-literal
           if (err) throw err;
-          setAccessDataForDistrict(AccessDataForDistricts);
           setCountryProjectSummaryData(CountryProjectSummaryData);
         },
       );
@@ -124,12 +114,8 @@ export function MapContainer() {
         position: 'relative',
       }}
     >
-      {projectDataShape &&
-      accessDataForDistrict &&
-      countryTaxonomy &&
-      countryProjectSummaryData ? (
+      {projectDataShape && countryTaxonomy && countryProjectSummaryData ? (
         <SideBar
-          accessDataForDistrict={accessDataForDistrict}
           countryTaxonomy={countryTaxonomy}
           countryProjectSummaryData={countryProjectSummaryData}
         />

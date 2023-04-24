@@ -1,42 +1,3 @@
-export interface AccessDataType {
-  adm2_id: string;
-  TotPopulation: number;
-  PopAccess2020: number;
-  PopAccess2019: number;
-  PopAccess2018: number;
-  PopAccess2017: number;
-  PopAccess2016: number;
-  PopAccess2015: number;
-  PopAccess2014: number;
-  PopAccess2013: number;
-  PopAccess2012: number;
-  adm2_name: string;
-  RWI?: number;
-}
-
-export interface CountryAccessDataType {
-  TotPopulation: number;
-  PopAccess2020: number;
-  PopAccess2019: number;
-  PopAccess2018: number;
-  PopAccess2017: number;
-  PopAccess2016: number;
-  PopAccess2015: number;
-  PopAccess2014: number;
-  PopAccess2013: number;
-  PopAccess2012: number;
-  TotPopulationLowRWI: number;
-  PopAccess2020LowRWI: number;
-  PopAccess2019LowRWI: number;
-  PopAccess2018LowRWI: number;
-  PopAccess2017LowRWI: number;
-  PopAccess2016LowRWI: number;
-  PopAccess2015LowRWI: number;
-  PopAccess2014LowRWI: number;
-  PopAccess2013LowRWI: number;
-  PopAccess2012LowRWI: number;
-}
-
 export interface CountryTaxonomyDataType {
   'Alpha-3 code-1': string;
   'Country or Area': string;
@@ -62,6 +23,32 @@ export interface CountryProjectSummaryDataType {
   'Number of projects': number;
 }
 
+export interface AccessYearlyData {
+  year: number;
+  value: number;
+}
+
+export interface AccessDataType {
+  latCenter: number;
+  longCenter: number;
+  country: string;
+  rwi: number;
+  population: number;
+  adm2_id: string;
+  adm2_name: string;
+  popAccess: AccessYearlyData[];
+}
+
+export interface CountrySummedDataType {
+  population: number;
+  noOfDistrictsWithRWI: number;
+  noOfDistricts: number;
+  totalPopulationWithRWIData: number;
+  populationLowRWI: number;
+  popAccess: AccessYearlyData[];
+  popAccessLowRWI: AccessYearlyData[];
+}
+
 export interface CtxDataType {
   selectedCountry?: string;
   selectedDistrict?: string;
@@ -70,6 +57,7 @@ export interface CtxDataType {
   hideLabels: boolean;
   showPoorRegions: boolean;
   highlightThreshold: number;
+  accessData?: AccessDataType[];
   updateSelectedCountry: (_d?: string) => void;
   updateSelectedDistrict: (_d?: string) => void;
   updateLayer: (_d: 1 | 2) => void;
@@ -77,4 +65,5 @@ export interface CtxDataType {
   updateHideLabels: (_d: boolean) => void;
   updateShowPoorRegions: (_d: boolean) => void;
   updateHighlightThreshold: (_d: number) => void;
+  updateAccessData: (_d: AccessDataType[]) => void;
 }

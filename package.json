@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@turf/turf": "^6.5.0",
     "@types/antd": "^1.0.0",
     "@types/d3-format": "^3.0.1",
     "@types/d3-queue": "^3.0.8",
@@ -19,6 +20,7 @@
     "@types/lodash.uniqby": "^4.7.7",
     "@types/styled-components": "^5.1.26",
     "@types/topojson": "^3.2.3",
+    "@types/turf": "^3.5.32",
     "antd": "^5.2.3",
     "d3-format": "^3.1.0",
     "d3-queue": "^3.0.7",
@@ -28,10 +30,12 @@
     "lodash.sumby": "^4.6.0",
     "lodash.uniqby": "^4.7.0",
     "maplibre-gl": "^2.4.0",
+    "pmtiles": "^2.7.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "styled-components": "^5.3.8",
     "topojson": "^3.0.2",
+    "turf": "^3.0.14",
     "undp-viz-colors": "^1.0.5"
   },
   "devDependencies": {

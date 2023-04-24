@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { CtxDataType } from '../Types';
+import { AccessDataType, CtxDataType } from '../Types';
 
 const Context = createContext<CtxDataType>({
   selectedCountry: undefined,
@@ -9,6 +9,7 @@ const Context = createContext<CtxDataType>({
   hideLabels: false,
   showPoorRegions: false,
   highlightThreshold: 100,
+  accessData: undefined,
   updateSelectedCountry: (_d?: string) => {},
   updateSelectedDistrict: (_d?: string) => {},
   updateLayer: (_d: 1 | 2) => {},
@@ -16,6 +17,7 @@ const Context = createContext<CtxDataType>({
   updateHideLabels: (_d: boolean) => {},
   updateShowPoorRegions: (_d: boolean) => {},
   updateHighlightThreshold: (_d: number) => {},
+  updateAccessData: (_d: AccessDataType[]) => {},
 });
 
 export default Context;

@@ -3,6 +3,7 @@ import { Header } from './Components/Header';
 import { MapContainer } from './Components/MapContainer';
 import Context from './Context/Context';
 import Reducer from './Context/Reducer';
+import { AccessDataType } from './Types';
 
 function App() {
   const initialState = {
@@ -54,7 +55,7 @@ function App() {
 
   const updateShowPoorRegions = (d: boolean) => {
     dispatch({
-      type: 'UPDATE_sHOW_POOR_REGIONS',
+      type: 'UPDATE_SHOW_POOR_REGION',
       payload: d,
     });
   };
@@ -62,6 +63,12 @@ function App() {
   const updateHighlightThreshold = (d: number) => {
     dispatch({
       type: 'UPDATE_HIGHLIGHT_THRESHOLD',
+      payload: d,
+    });
+  };
+  const updateAccessData = (d: AccessDataType) => {
+    dispatch({
+      type: 'UPDATE_ACCESS_DATA',
       payload: d,
     });
   };
@@ -79,6 +86,7 @@ function App() {
           updateHideLabels,
           updateShowPoorRegions,
           updateHighlightThreshold,
+          updateAccessData,
         }}
       >
         <MapContainer />
