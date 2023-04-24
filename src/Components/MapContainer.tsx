@@ -42,8 +42,13 @@ const LayerSelectorEl = styled.div`
 `;
 
 export function MapContainer() {
-  const { layer, updateLayer, updateShowProjects, updateHideLabels } =
-    useContext(Context) as CtxDataType;
+  const {
+    layer,
+    updateLayer,
+    updateShowProjects,
+    updateHideLabels,
+    updateShowPoorRegions,
+  } = useContext(Context) as CtxDataType;
   const [countryProjectSummaryData, setCountryProjectSummaryData] = useState<
     undefined | CountryProjectSummaryDataType[]
   >(undefined);
@@ -140,6 +145,14 @@ export function MapContainer() {
         <hr className='undp-style margin-top-05 margin-bottom-05' />
         <h6 className='undp-typography margin-bottom-05'>Settings</h6>
         <Space direction='vertical'>
+          <Checkbox
+            className='undp-checkbox'
+            onChange={e => {
+              updateShowPoorRegions(e.target.checked);
+            }}
+          >
+            Show Poor Regions Only*
+          </Checkbox>
           <Checkbox
             className='undp-checkbox'
             onChange={e => {

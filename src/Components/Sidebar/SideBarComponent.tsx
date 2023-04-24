@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useContext, useEffect, useState } from 'react';
-import { Checkbox, Select, Slider } from 'antd';
+import { Select, Slider } from 'antd';
 import { format } from 'd3-format';
 import sumBy from 'lodash.sumby';
 import uniqBy from 'lodash.uniqby';
@@ -30,7 +30,6 @@ export function SideBarComponent(props: Props) {
     updateSelectedCountry,
     updateSelectedDistrict,
     updateHighlightThreshold,
-    updateShowPoorRegions,
   } = useContext(Context) as CtxDataType;
   const [data, setData] = useState<null | CountrySummedDataType>(null);
   const countryList = uniqBy(accessData, d => d.country).map(
@@ -248,14 +247,6 @@ export function SideBarComponent(props: Props) {
               updateHighlightThreshold(d);
             }}
           />
-          <Checkbox
-            className='undp-checkbox margin-top-05'
-            onChange={e => {
-              updateShowPoorRegions(e.target.checked);
-            }}
-          >
-            Show Poor Regions Only*
-          </Checkbox>
           <hr className='undp-style margin-top-07 margin-bottom-07' />
           <p
             className='undp-typography margin-bottom-07'
@@ -373,14 +364,6 @@ export function SideBarComponent(props: Props) {
               updateHighlightThreshold(d);
             }}
           />
-          <Checkbox
-            className='undp-checkbox margin-top-05'
-            onChange={e => {
-              updateShowPoorRegions(e.target.checked);
-            }}
-          >
-            Show Poor Regions Only*
-          </Checkbox>
           <hr className='undp-style margin-top-07 margin-bottom-07' />
           <div className='margin-bottom-07'>
             <h6 className='undp-typography margin-bottom-03'>
