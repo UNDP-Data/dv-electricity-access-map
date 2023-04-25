@@ -312,7 +312,8 @@ export function SideBarComponent(props: Props) {
                   (data.totalPopulationWithRWIData * 100) /
                   data.population
                 ).toFixed(1)}
-                % population in the {selectedCountry || 'World'}
+                % population
+                {selectedCountry ? ' in the country' : ' in the world'}
               </p>
             ) : null}
           </div>
@@ -421,7 +422,8 @@ export function SideBarComponent(props: Props) {
                   (data.totalPopulationWithRWIData * 100) /
                   data.population
                 ).toFixed(1)}
-                % population in the {selectedCountry || 'World'}
+                % population
+                {selectedCountry ? ' in the country' : ' in the world'}
               </p>
             ) : null}
           </div>
