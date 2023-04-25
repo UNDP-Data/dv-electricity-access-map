@@ -306,8 +306,8 @@ export function SideBarComponent(props: Props) {
             </p>
             {data ? (
               <p className='undp-typography small-font italics'>
-                {data.noOfDistrictsWithRWI} out of {data.noOfDistricts} have RWI
-                data which covers{' '}
+                {data.noOfDistrictsWithRWI} out of {data.noOfDistricts}{' '}
+                districts have RWI data which covers{' '}
                 {(
                   (data.totalPopulationWithRWIData * 100) /
                   data.population
@@ -415,8 +415,8 @@ export function SideBarComponent(props: Props) {
             </p>
             {data ? (
               <p className='undp-typography small-font italics'>
-                {data.noOfDistrictsWithRWI} out of {data.noOfDistricts} have RWI
-                data which covers{' '}
+                {data.noOfDistrictsWithRWI} out of {data.noOfDistricts}{' '}
+                districts have RWI data which covers{' '}
                 {(
                   (data.totalPopulationWithRWIData * 100) /
                   data.population
