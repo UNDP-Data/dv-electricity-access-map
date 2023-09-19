@@ -35,7 +35,7 @@ export function SideBarComponent(props: Props) {
   const countryList = uniqBy(accessData, d => d.country).map(
     d =>
       countryTaxonomy[
-        countryTaxonomy.findIndex(c => c['Alpha-3 code-1'] === d.country)
+        countryTaxonomy.findIndex(c => c['Alpha-3 code'] === d.country)
       ]['Country or Area'],
   );
   useEffect(() => {
@@ -54,7 +54,7 @@ export function SideBarComponent(props: Props) {
               countryTaxonomy.findIndex(
                 el => el['Country or Area'] === selectedCountry,
               )
-            ]['Alpha-3 code-1'],
+            ]['Alpha-3 code'],
         )
       : filteredDataByHighlightThreshold;
     const AllDatLowRWI = filteredDataByCountry.filter(d => d.rwi && d.rwi < 0);
@@ -340,7 +340,7 @@ export function SideBarComponent(props: Props) {
                     countryTaxonomy.findIndex(
                       el => el['Country or Area'] === selectedCountry,
                     )
-                  ]['Alpha-3 code-1'],
+                  ]['Alpha-3 code'],
               )
               .map((d, i) => (
                 <Select.Option
