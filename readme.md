@@ -1,55 +1,89 @@
-# Project Title
-_Project description_
+# Electricity Access from Space
+#### Electricity access from space [Click here to see the interface](https://witty-tree-055fdd510.4.azurestaticapps.net).
 
-__Link for the visualization__
-_Link where the visualization is deployed_
+## Table of Contents
+* [Link for the visualization](#section-01)
+* [Deployment](#deployment)
+* [Steps to integrate the vis in static page](#section-02)
+* [Pages on DFP where This Viz is Used](#section-03)
+* [Related Repos](#section-04)
+* [Global CSS Files and Repo](#section-05)
+* [Build With](#section-06)
+* [Installation](#section-07)
+* [Local Deployment](#section-08)
+* [Available Scripts](#section-09)
+* [Tooling Setup](#section-10)
 
-__Pages Where the Visualization is Used__
-_List of all the pages where this project is used_
+## Link for the visualization<a name="section-01"></a>
+[https://witty-tree-055fdd510.4.azurestaticapps.net](https://witty-tree-055fdd510.4.azurestaticapps.net)
 
-## Features
-_Key feature of the project_
+## Deployment<a name="deployment"></a>
+The Production site deployed using Azure Static Web App and work flow can be found [here](https://github.com/UNDP-Data/dv-electricity-access-map/blob/master/.github/workflows/azure-static-web-apps-witty-tree-055fdd510.yml)
 
-## Related Repos
-_List of all the repo that are used in this project as dataset, meta data, css etc._
+## Steps to Integrating the Visualization in the Data Future Platform or Any Other Page<a name="section-02"></a>
+Add the following div in the page
+```
+<div id="root"></div>
+```
+
+Apart from the mentioned `div` above the following `script` and `link` needs to be added to the `head` or in the embed code
+```
+<script defer src="<Link to the Visualization Mentioned Above>/static/js/main.js"></script>
+<link rel="stylesheet" href="https://undp-data.github.io/stylesheets-for-viz/style/mainStyleSheet.css" />
+<link rel="stylesheet" href="https://undp-data.github.io/stylesheets-for-viz/style/StyleForGraphingInterface.css" />
+<link rel="stylesheet" href="https://undp-data.github.io/stylesheets-for-viz/style/StyleForGraph.css" />
+```
+
+## Pages on DFP Where the Visualization is Used<a name="section-03"></a>
+[Electricity access today and future](https://data.undp.org/insights/electricity-access-today-and-future)
+
+## Related Repos<a name="section-04"></a>
+* [__stylesheet-for-viz__](https://github.com/UNDP-Data/stylesheets-for-viz): Repo which defines the css settings for the project
+
+## Global CSS for UI and Graphs<a name="section-05"></a>
+__Git Repo__: https://github.com/UNDP-Data/stylesheets-for-viz
 
 __Link for stylesheets__
 * https://undp-data.github.io/stylesheets-for-viz/style/mainStyleSheet.css
 * https://undp-data.github.io/stylesheets-for-viz/style/StyleForGraphingInterface.css
 * https://undp-data.github.io/stylesheets-for-viz/style/StyleForGraph.css
 
-## Build with
-_All the main library/frameworks used in the project_
+## Build with<a name="section-06"></a>
+* __React__: Used as MVC framework.
+* __styled-components__: Utilizes tagged template literals and the power of CSS, allows to write actual CSS code to style the components in JS/TS.
+* __Various D3 Libraries__: Used for visualizations, adding interaction and reading the csv data file.
+* __MapLibre__: This is package for creating sub-national maps.
+* __AntD__: For UI elements like dropdown, buttons, checkbox, and slider.
+* __lodash__: Used for manipulating and iterating arrays and objects.
+* __undp-viz-colors__: This is package for defining the visualization color palette.
 
-## Installation
+## Installation<a name="section-07"></a>
 This project uses `npm`. For installation you will need to install `node` and `npm`, if you don't already have it. `node` and `npm` can be installed from [here](https://nodejs.org/en/download/).
 
-To install the project, sinply clone the the repo and them run `npm install` in the project folder. You can use terminal on Mac and Command Prompt on Windows.
+To install the project, simply clone the the repo and them run `npm install` in the project folder. You can use terminal on Mac and Command Prompt on Windows.
 
-This projest is bootstrapped with [`Vite`](https://vitejs.dev/) and was created using `npm create vite@latest` command.
+This project is bootstrapped with [`Vite`](https://vitejs.dev/) and was created using `npm create vite@latest` command.
 
 Run the terminal or command prompt and then run the following
 
 ```
-git clone https://github.com/UNDP-Data/{{projectName}}.git
-cd {{projectName}}
+git clone https://github.com/UNDP-Data/dv-electricity-access-map.git
+cd dv-electricity-access-map
 npm install
 ```
 
-## Local Development
-_Tutorial to deploy the app localy_
+## Local Development<a name="section-08"></a>
+To start the project locally, you can run `npm run dev` in the project folder in terminal or command prompt.
 
-## Available Scripts
+This is run the app in development mode. Open [http://localhost:5173/](http://localhost:5173/) to view it in the browser.
+
+The page will reload if you make edits. You will also see any lint errors in the console.
+
+## Available Scripts<a name="section-09"></a>
 * `npm run dev`: Executes `vite` and start the local server for local deployment.
 * `npm run build`: Executes `tsc && vite build` and builds the app for production and deployment.
 
-## Tooling Setup
+## Tooling Setup<a name="section-10"></a>
 This project uses ESLint integrated with prettier, which verifies and formats your code so you don't have to do it manually. You should have your editor set up to display lint errors and automatically fix those which it is possible to fix. See [http://eslint.org/docs/user-guide/integrations](http://eslint.org/docs/user-guide/integrations).
 
 This project is build in Visual Studio Code, therefore the project is already set up to work with. Install it from [here](https://code.visualstudio.com/) and then install this [eslint plugin](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) and you should be good to go.
-
-## Future Scope
-_to-do_
-
-## Author
-_name and email id of the author_

@@ -71,7 +71,7 @@ export function MapEl(props: Props) {
             ],
             tileSize: 256,
             attribution:
-              'Map tiles by <a target="_top" rel="noopener" href="https://carto.com/">CartoDB</a>',
+              '<p class="undp-typography small-font margin-bottom-00">Map tiles by <a target="_top" rel="noopener" href="https://carto.com/" class="small-font">CartoDB</a></p>',
           },
           'raster-labels': {
             type: 'raster',
