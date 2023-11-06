@@ -23,7 +23,7 @@ The Production site deployed using Azure Static Web App and work flow can be fou
 ## Steps to Integrating the Visualization in the Data Future Platform or Any Other Page<a name="section-02"></a>
 Add the following div in the page
 ```
-<div id="root"></div>
+<div id="electricity-access-map"></div>
 ```
 
 Apart from the mentioned `div` above the following `script` and `link` needs to be added to the `head` or in the embed code
