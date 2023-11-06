@@ -253,7 +253,10 @@ export function SideBarComponent(props: Props) {
             style={{ fontSize: '0.875rem' }}
           >
             Data is calculated for {countryList.length} countries.{' '}
-            <span className='italics'>
+            <span
+              className='undp-typography margin-bottom-07 italics'
+              style={{ fontSize: '0.875rem' }}
+            >
               Click on a country to explore data for the country
             </span>
           </p>
