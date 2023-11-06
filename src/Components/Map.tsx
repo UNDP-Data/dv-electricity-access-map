@@ -70,8 +70,6 @@ export function MapEl(props: Props) {
               'https://basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png',
             ],
             tileSize: 256,
-            attribution:
-              '<p class="undp-typography small-font margin-bottom-00">Map tiles by <a target="_top" rel="noopener" href="https://carto.com/" class="small-font">CartoDB</a></p>',
           },
           'raster-labels': {
             type: 'raster',
@@ -90,7 +88,6 @@ export function MapEl(props: Props) {
             tiles: [
               'https://undpngddlsgeohubdev01.blob.core.windows.net/admin/adm0_polygons/{z}/{x}/{y}.pbf',
             ],
-            attribution: 'UNDP GeoHub',
             promoteId: 'adm0_id',
           },
           projectData: {
